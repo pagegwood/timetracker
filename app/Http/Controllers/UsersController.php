@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
+use Hash, Input, Validator, Redirect, Session;
 
 class UsersController extends Controller
 {
@@ -62,7 +65,11 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
+
+        $user = User::find($id);
         //
+        return View::make('user.edit')
+            ->with('user', $user);
     }
 
     /**
@@ -75,6 +82,37 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $rules = array(
+            'name'      => 'required',
+            'email'     => 'required|email',
+            'password'              => 'min:5|confirmed',
+            'password_confirmation' => 'required_with:password|min:5'
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+
+        //process
+        if ($validator->fails()) {
+            return Redirect::to('user/' . $id . '/edit')
+                ->withErrors($validator);
+        }
+        else {
+            //store
+
+            $user = User::find($id);
+            $user->name             = Input::get('name');
+            $user->first_name       = Input::get('first_name');
+            $user->last_name        = Input::get('last_name');
+            $user->email            = Input::get('email');
+            $password               = Input::get('password');
+            $user->password = Hash::make($password);
+
+            $user->save();
+
+            //redirect
+            Session::flash('message', 'Successfully updated user!');
+            return Redirect::to('user/' . $id . '/edit');
+        }
     }
 
     /**
