@@ -1,18 +1,11 @@
-.time-numbers > *, .time-entry > * {
+.ng-cloak{
+  display: none;
+}
+
+
+.time-numbers > * {
   display: inline-block;
 }
-
-.timepicker {
-  margin-right: 15px;
-}
-
-@media (min-width: 546px) {
-  .time-entry-comment {
-    position: relative;
-    top: 60px;
-  }
-}
-
 
 .edit-time-entry {
   border-top: 1px solid #ccc;

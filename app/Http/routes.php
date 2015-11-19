@@ -28,5 +28,7 @@ Route::group(array('prefix' => 'api'), function()
 	Route::resource('users', 'UsersController');
 });
 
+Route::get('user/teams', 'UsersController@teams');
+Route::resource('user', 'UsersController');
 
- Route::resource('user', 'UsersController');
+Route::resource('teams', 'TeamsController');

@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
 use App\User;
+use App\Team;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Hash, Input, Validator, Redirect, Session;
+use Auth, Hash, Input, Validator, Redirect, Session;
 
 class UsersController extends Controller
 {
@@ -125,4 +126,23 @@ class UsersController extends Controller
     {
         //
     }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function teams()
+    {
+
+        $current_user = Auth::user()->id;
+
+        $teams = User::find($current_user)->teams->all();
+
+        return View::make('user.teams')
+            ->with('teams', $teams);
+    }
+
+
 }

@@ -7,7 +7,7 @@
 		<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
 	</head>
 	@if (array_key_exists('ng-app', View::getSections()) && array_key_exists('ng-controller', View::getSections()))
-	<body ng-app="@yield('ng-app')" ng-controller="@yield('ng-controller')">
+	<body class="ng-cloak" ng-cloak ng-app="@yield('ng-app')" ng-controller="@yield('ng-controller')">
 	@else
 	<body>
 	@endif
@@ -20,13 +20,14 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">TimeTracker</a>
+					<a class="navbar-brand" href="{{ url('/') }}">TimeTracker</a>
 				</div>
 
 				<div class="collapse navbar-collapse" id="navbar">
 					<ul class="nav navbar-nav">
 						@if(!auth()->guest())
 						<li><a href="{{ url('/home') }}">Dashboard</a></li>
+						<li><a href="{{ url('/user/teams') }}">Teams</a></li>
 						@endif
 					</ul>
 

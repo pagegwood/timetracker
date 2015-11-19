@@ -32,4 +32,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $hidden = ['password', 'remember_token', 'created_at', 'updated_at'];
+
+    /**
+     * Get the teams linked to this user
+     */
+    public function teams()
+    {
+        return $this->hasMany('App\Team');
+    }
 }
