@@ -12,6 +12,7 @@
 							<tr>
 								<td>ID</td>
 								<td>Name</td>
+								<td>Manage</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -20,11 +21,14 @@
 									<tr>
 										<td>{{ $value->id }}</td>
 										<td>{{ $value->name }}</td>
-
 										<td>
-											<a class="btn btn-small btn-success" href="{{ URL::to('teams/' . $value->id) }}">Show this Team</a>
+										{!! Form::open(array('url' => 'teams/' . $value->id)) !!}
+                    {!! Form::hidden('_method', 'DELETE') !!}
+		                    {!! Form::submit('Delete', array('class' => 'btn btn-sm btn-danger')) !!}
+		                {!! Form::close() !!}
+											<a class="btn btn-small btn-success" href="{{ URL::to('teams/' . $value->id) }}">View</a>
 
-											<a class="btn btn-small btn-info" href="{{ URL::to('teams/' . $value->id . '/edit') }}">Edit Team</a>
+											<a class="btn btn-small btn-info" href="{{ URL::to('teams/' . $value->id . '/edit') }}">Edit</a>
 
 										</td>
 									</tr>

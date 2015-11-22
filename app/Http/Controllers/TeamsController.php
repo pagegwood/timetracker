@@ -25,9 +25,7 @@ class TeamsController extends Controller
          // get all the teams
         $teams = Team::all();
 
-        // load the view and pass the nerds
-        return View::make('teams.index')
-            ->with('teams', $teams);
+        return $teams;
 
     }
 
@@ -63,13 +61,14 @@ class TeamsController extends Controller
             // store
             $team = new Team;
             $team->name       = Input::get('name');
+            $team->description = Input::get('description');
             $team->user_id  = Auth::user()->id;
 
             $team->save();
 
             // redirect
             Session::flash('message', 'Successfully created team!');
-            return Redirect::to('teams');
+            return Redirect::to('user/teams');
         }
 
     }
@@ -93,7 +92,10 @@ class TeamsController extends Controller
      */
     public function edit($id)
     {
+        $team = Team::find($id);
         //
+        return View::make('teams.edit')
+            ->with('team', $team);
     }
 
     /**
@@ -106,6 +108,30 @@ class TeamsController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $rules = array(
+            'name'      => 'required',
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+
+        //process
+        if ($validator->fails()) {
+            return Redirect::to('team/' . $id . '/edit')
+                ->withErrors($validator);
+        }
+        else {
+            //store
+
+            $team = Team::find($id);
+            $team->name             = Input::get('name');
+            $team->description      = Input::get('description');
+
+            $team->save();
+
+            //redirect
+            Session::flash('message', 'Successfully updated team!');
+            return Redirect::to('user/teams');
+        }
     }
 
     /**
@@ -117,5 +143,9 @@ class TeamsController extends Controller
     public function destroy($id)
     {
         //
+        $team = Team::find($id);
+        $team->delete();
+        Session::flash('message', 'Successfully deleted your team.');
+        return Redirect::to('user/teams');
     }
 }
