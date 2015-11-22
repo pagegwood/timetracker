@@ -9,25 +9,24 @@
 			<div class="col-sm-8">
 				<div class="well">
 
-					<h1>Edit {{ $team->name }}</h1>
+					<h1>Create Project</h1>
 
 					{!! HTML::ul($errors->all()) !!}
 
-					{!! Form::model($team, array('route' => array('teams.update', $team->id), 'method' => 'PUT')) !!}
+					{!! Form::open(array('url' => 'projects')) !!}
 
 			        <!-- name -->
 			        <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-				        {!! Form::label('name', 'Team Name') !!}
+				        {!! Form::label('name', 'Project Name') !!}
 				        {!! Form::text('name', null, ['class' => 'form-control']) !!}
 				      </div>
 
 				      <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-				        {!! Form::label('description', 'Team Description') !!}
+				        {!! Form::label('description', 'Project Description') !!}
 				        {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
 				      </div>
 
-
-			        {!! Form::submit('Update Team', ['class'=> 'btn btn-lg btn-primary']) !!}
+			        {!! Form::submit('Create Project', ['class'=> 'btn btn-lg btn-primary']) !!}
 
 			    {!! Form::close() !!}
 

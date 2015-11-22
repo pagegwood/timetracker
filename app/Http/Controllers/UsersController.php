@@ -135,13 +135,30 @@ class UsersController extends Controller
      */
     public function teams()
     {
-
+        //TODO: Clean up this user bit
         $current_user = Auth::user()->id;
 
         $teams = User::find($current_user)->teams->all();
 
         return View::make('user.teams')
             ->with('teams', $teams);
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function projects()
+    {
+        //TODO: Clean up this user bit
+        $current_user = Auth::user()->id;
+
+        $projects = User::find($current_user)->projects->all();
+
+        return View::make('user.projects')
+            ->with('projects', $projects);
     }
 
 
