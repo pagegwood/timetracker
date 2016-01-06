@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
+use App\Project;
 use App\Team;
 
 use App\Http\Requests;
@@ -37,7 +38,8 @@ class TeamsController extends Controller
     public function create()
     {
         //
-        return View::make('teams.create');
+        $projects = Project::lists('name', 'id');
+        return View::make('teams.create', compact('projects'));
     }
 
     /**
@@ -64,7 +66,10 @@ class TeamsController extends Controller
             $team->description = Input::get('description');
             $team->user_id  = Auth::user()->id;
 
+
+
             $team->save();
+            $team->projects()->attach($request->input('project_list'));
 
             // redirect
             Session::flash('message', 'Successfully created team!');
@@ -82,6 +87,10 @@ class TeamsController extends Controller
     public function show($id)
     {
         //
+        $team = Team::find($id);
+        $projects = Project::lists('name', 'id');
+
+        return View::make('teams.team', compact('team', 'projects'));
     }
 
     /**
@@ -93,9 +102,9 @@ class TeamsController extends Controller
     public function edit($id)
     {
         $team = Team::find($id);
+        $projects = Project::lists('name', 'id');
         //
-        return View::make('teams.edit')
-            ->with('team', $team);
+        return View::make('teams.edit', compact('team', 'projects'));
     }
 
     /**
@@ -107,7 +116,7 @@ class TeamsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
         $rules = array(
             'name'      => 'required',
         );
@@ -125,8 +134,10 @@ class TeamsController extends Controller
             $team = Team::find($id);
             $team->name             = Input::get('name');
             $team->description      = Input::get('description');
+            $team->projects()->sync($request->input('project_list'));
 
             $team->save();
+
 
             //redirect
             Session::flash('message', 'Successfully updated team!');

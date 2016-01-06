@@ -11,10 +11,27 @@ class Project extends Model {
 
     protected $hidden = ['user_id'];
 
-    // Eloquent relationship that says one user manages the team
+    // Eloquent relationship that says one user manages the Project
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function teams()
+    {
+    	return $this->belongsToMany('App\Team')->withTimestamps();
+    }
+
+
+    /**
+    * Get a list of the teams with IDs
+    *
+    * @return array
+    */
+
+    public function getTeamListAttribute()
+    {
+        return $this->teams->lists('id');
     }
 
 }

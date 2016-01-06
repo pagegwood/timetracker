@@ -26,6 +26,10 @@
 				        {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
 				      </div>
 
+				      <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+				        {!! Form::label('project_list', 'Projects') !!}
+				        {!! Form::select('project_list[]', $projects, $team->projects->lists('id')->all(), ['class' => 'form-control', 'multiple']) !!}
+				      </div>
 
 			        {!! Form::submit('Update Team', ['class'=> 'btn btn-lg btn-primary']) !!}
 

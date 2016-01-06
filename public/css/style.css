@@ -13,3 +13,8 @@
   padding: 15px;
   margin: 10px !important;
 }
+
+
+.u-display-inline{
+	display: inline-block;
+}

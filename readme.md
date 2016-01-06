@@ -11,6 +11,8 @@ The this is open-sourced software licensed under the [MIT license](http://openso
 
 #### TODO
 - Cleanup user_id references in crud
+- Create project slug on creation
+- Pretty Permalinks using slugs
 - Use middleware to protect pages and redirect to 404 as needed
 - 404 view
 - Success/Error messages (something similar to toaster perhaps)

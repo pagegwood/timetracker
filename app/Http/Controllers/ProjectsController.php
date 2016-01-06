@@ -22,9 +22,9 @@ class ProjectsController extends Controller
     public function index()
     {
          // get all the projects
-        $teams = Project::all();
+        $projects = Project::all();
 
-        return $teams;
+        return $projects;
     }
 
     /**

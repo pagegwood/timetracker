@@ -17,4 +17,21 @@ class Team extends Model {
         return $this->belongsTo('App\User');
     }
 
+    //Eloquent reloationship listing projects belonging to a team
+    public function projects()
+    {
+    	return $this->belongsToMany('App\Project')->withTimestamps();
+    }
+
+     /**
+    * Get a list of the projects with IDs
+    *
+    * @return array
+    */
+
+    public function getProjectListAttribute()
+    {
+        return $this->projects->lists('id');
+    }
+
 }
