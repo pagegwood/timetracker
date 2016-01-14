@@ -29,6 +29,7 @@
 						<li><a href="{{ url('/home') }}">Dashboard</a></li>
 						<li><a href="{{ url('/user/teams') }}">Teams</a></li>
 						<li><a href="{{ url('/user/projects') }}">Projects</a></li>
+						<li><a href="{{ url('/user/tasks') }}">Tasks</a></li>
 						@endif
 					</ul>
 

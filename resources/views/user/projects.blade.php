@@ -12,6 +12,7 @@
 							<tr>
 								<td>ID</td>
 								<td>Name</td>
+								<td>Tasks</td>
 								<td>Manage</td>
 							</tr>
 						</thead>
@@ -20,6 +21,7 @@
 							<tr>
 								<td>{{ $value->id }}</td>
 								<td>{{ $value->name }}</td>
+								<td>{{ count($value->tasks)}}</td>
 								<td>
 								{!! Form::open(array('url' => 'projects/' . $value->id, 'class' => 'u-display-inline')) !!}
                 {!! Form::hidden('_method', 'DELETE') !!}

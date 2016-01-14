@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model {
+class Task extends Model {
 
-    protected $table = "projects";
+    protected $table = "tasks";
 
     // An array of the fields we can fill in the teams table
     protected $fillable = ['id', 'user_id', 'description', 'name', 'slug', 'created_at', 'updated_at'];
@@ -17,15 +17,9 @@ class Project extends Model {
         return $this->belongsTo('App\User');
     }
 
-    public function teams()
+    public function projects()
     {
-    	return $this->belongsToMany('App\Team')->withTimestamps();
-    }
-
-
-    public function tasks()
-    {
-        return $this->belongsToMany('App\Task')->withTimestamps();
+        return $this->belongsToMany('App\Project')->withTimestamps();
     }
 
 
@@ -35,9 +29,9 @@ class Project extends Model {
     * @return array
     */
 
-    public function getTeamListAttribute()
+    public function getProjectListAttribute()
     {
-        return $this->teams->lists('id');
+        return $this->projects->lists('id');
     }
 
 }

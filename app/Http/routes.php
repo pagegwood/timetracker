@@ -30,7 +30,10 @@ Route::group(array('prefix' => 'api'), function()
 
 Route::get('user/teams', 'UsersController@teams');
 Route::get('user/projects', 'UsersController@projects');
+Route::get('user/tasks', 'UsersController@tasks');
+
 Route::resource('user', 'UsersController');
 
+Route::resource('tasks', 'TasksController');
 Route::resource('teams', 'TeamsController');
 Route::resource('projects', 'ProjectsController');

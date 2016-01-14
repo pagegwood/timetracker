@@ -168,4 +168,21 @@ class UsersController extends Controller
     }
 
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function tasks()
+    {
+        //TODO: Clean up this user bit
+        $current_user = Auth::user()->id;
+
+        $tasks = User::find($current_user)->tasks->all();
+
+        return View::make('user.tasks')
+            ->with('tasks', $tasks);
+    }
+
+
 }

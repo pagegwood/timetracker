@@ -5,20 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
-use App\Project;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Project;
+use App\Task;
 
 use Auth, Input, Validator, Redirect, Session;
 
-class ProjectsController extends Controller
+class TasksController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -26,10 +21,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-         // get all the projects
-        $projects = Project::all();
-
-        return $projects;
+        //
     }
 
     /**
@@ -40,7 +32,8 @@ class ProjectsController extends Controller
     public function create()
     {
         //
-        return View::make('projects.create');
+        $projects = Project::lists('name', 'id');
+        return View::make('tasks.create', compact('projects'));
     }
 
     /**
@@ -51,7 +44,6 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $rules = array(
             'name'       => 'required',
         );
@@ -59,21 +51,25 @@ class ProjectsController extends Controller
 
         // process the login
         if ($validator->fails()) {
-            return Redirect::to('projects/create')
+            return Redirect::to('tasks/create')
                 ->withErrors($validator);
         } else {
             // store
-            $project = new Project;
-            $project->name       = Input::get('name');
-            $project->description = Input::get('description');
-            $project->user_id  = Auth::user()->id;
+            $task = new Task;
+            $task->name       = Input::get('name');
+            $task->description = Input::get('description');
+            $task->user_id  = Auth::user()->id;
 
-            $project->save();
+
+
+            $task->save();
+            $task->projects()->attach($request->input('project_list'));
 
             // redirect
-            Session::flash('message', 'Successfully created Project!');
-            return Redirect::to('user/projects');
+            Session::flash('message', 'Successfully created task!');
+            return Redirect::to('user/tasks');
         }
+
     }
 
     /**
@@ -84,12 +80,11 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
+
+        $task = Task::find($id);
         //
-        //
-        $project = Project::find($id);
-        //
-        return View::make('projects.details')
-            ->with('project', $project);
+        return View::make('tasks.details', compact('task'));
+
     }
 
     /**
@@ -100,11 +95,10 @@ class ProjectsController extends Controller
      */
     public function edit($id)
     {
+        $task = Task::find($id);
+        $projects = Project::lists('name', 'id');
         //
-        $project = Project::find($id);
-        //
-        return View::make('projects.edit')
-            ->with('project', $project);
+        return View::make('tasks.edit', compact('task', 'projects'));
     }
 
     /**
@@ -126,21 +120,22 @@ class ProjectsController extends Controller
 
         //process
         if ($validator->fails()) {
-            return Redirect::to('project/' . $id . '/edit')
+            return Redirect::to('task/' . $id . '/edit')
                 ->withErrors($validator);
         }
         else {
             //store
 
-            $project = Project::find($id);
-            $project->name             = Input::get('name');
-            $project->description      = Input::get('description');
+            $task = Task::find($id);
+            $task->name             = Input::get('name');
+            $task->description      = Input::get('description');
+            $task->projects()->sync($request->input('project_list'));
 
-            $project->save();
+            $task->save();
 
             //redirect
-            Session::flash('message', 'Successfully updated project!');
-            return Redirect::to('user/projects');
+            Session::flash('message', 'Successfully updated task!');
+            return Redirect::to('user/tasks');
         }
     }
 
@@ -153,9 +148,9 @@ class ProjectsController extends Controller
     public function destroy($id)
     {
         //
-        $project = Project::find($id);
-        $project->delete();
-        Session::flash('message', 'Successfully deleted your project.');
-        return Redirect::to('user/projects');
+        $task = Task::find($id);
+        $task->delete();
+        Session::flash('message', 'Successfully deleted your task');
+        return Redirect::to('user/tasks');
     }
 }
